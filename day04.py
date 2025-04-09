@@ -2,7 +2,7 @@
 # John Roy Daradal 
 
 # SolutionA: 2654
-# SolutionB: 
+# SolutionB: 1990
 
 from utils import *
 
@@ -20,6 +20,13 @@ def day04A():
     for letter in ('A','S'):
         vectors = findNextPositions(grid, vectors, letter)
     print(len(vectors))
+
+def day04B():
+    full = True 
+    grid = input04(full)
+    pts = findStartingA(grid)
+    pts = findXMAS(grid, pts)
+    print(len(pts))
 
 def findStartingXM(grid: list[str]) -> list[vector]:
     pts: list[coords] = [(r,c) for r,line in enumerate(grid) for c,char in enumerate(line) if char == 'X']
@@ -70,5 +77,34 @@ def isInsideBounds(c: coords, bounds: box) -> bool:
     row,col = c 
     return minRow <= row and minCol <= col and row < maxRow and col < maxCol 
 
+def findStartingA(grid: list[str]) -> list[coords]:
+    innerBounds: box = [(1,1), (len(grid)-1, len(grid[0])-1)]
+    pts: list[coords] = []
+    for row,line in enumerate(grid):
+        for col,item in enumerate(line):
+            if item == 'A' and isInsideBounds((row,col), innerBounds):
+                pts.append((row,col))
+    return pts
+
+def findXMAS(grid: list[str], centers: list[coords]) -> list[coords]:
+    valid = []
+    for c in centers:
+        row,col = c 
+        # left diag 
+        tl = grid[row-1][col-1]
+        br = grid[row+1][col+1]
+        ldiag = tl + 'A' + br 
+        # right diag 
+        tr = grid[row-1][col+1]
+        bl = grid[row+1][col-1]
+        rdiag = tr + 'A' + bl 
+        if isXMAS(ldiag, rdiag):
+            valid.append(c)
+    return valid 
+
+def isXMAS(diag1: str, diag2: str):
+    return all(d == 'MAS' or d == 'SAM' for d in (diag1,diag2))
+
 if __name__ == '__main__':
     day04A()
+    day04B()
