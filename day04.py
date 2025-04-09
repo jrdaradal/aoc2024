@@ -6,10 +6,6 @@
 
 from utils import *
 
-coords = tuple[int,int]
-vector = tuple[coords,coords] # coords, direction
-box    = tuple[coords,coords] # bounds
-
 def input04(full: bool) -> list[str]:
     return readLines(getPath(4, full))
 
@@ -68,14 +64,6 @@ def surrounding(c: coords, bounds: box) -> list[vector]:
         ((row+1,col+1), (1,1)),
     ]
     return list(filter(lambda v: isInsideBounds(v[0], bounds), near))
-
-def gridBounds(grid: list[str]) -> box:
-    return ((0,0), (len(grid), len(grid[0])))
-
-def isInsideBounds(c: coords, bounds: box) -> bool:
-    (minRow,minCol),(maxRow,maxCol) = bounds 
-    row,col = c 
-    return minRow <= row and minCol <= col and row < maxRow and col < maxCol 
 
 def findStartingA(grid: list[str]) -> list[coords]:
     innerBounds: box = [(1,1), (len(grid)-1, len(grid[0])-1)]

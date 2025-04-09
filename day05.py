@@ -1,4 +1,4 @@
-# 2024 Advent of Code Day 04 Solution
+# 2024 Advent of Code Day 05 Solution
 # John Roy Daradal 
 
 # SolutionA: 7024
