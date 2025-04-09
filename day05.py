@@ -2,6 +2,7 @@
 # John Roy Daradal 
 
 # SolutionA: 7024
+# SolutionB: 4151
 
 from utils import * 
 
@@ -31,6 +32,17 @@ def day05A():
             total += mid(numbers)
     print(total)
 
+def day05B():
+    full = True 
+    rules, pages = input05(full)
+    rules = ruleBook(rules)
+    total = 0 
+    for numbers in pages:
+        numbers, valid = correctOrder(numbers, rules)
+        if not valid:
+            total += mid(numbers)
+    print(total)
+
 def mid(numbers: list[int]) -> int:
     idx = len(numbers) // 2 
     return numbers[idx]
@@ -51,5 +63,24 @@ def isValid(numbers: list[int], rules: dict[int,set[int]]) -> bool:
             return False 
     return True
 
+def correctOrder(numbers: list[int], rules: dict[int,set[int]]) -> tuple[list[int], bool]:
+    valid = True 
+    idx, limit = 0, len(numbers)-1
+    while idx < limit:
+        curr = numbers[idx]
+        after = set(numbers[idx+1:])
+        blacklist = rules.get(curr, set())
+        common = after.intersection(blacklist)
+        if len(common) == 0:
+            idx += 1
+        else:
+            valid = False 
+            insert = max(numbers.index(x) for x in common) + 1
+            numbers[idx] = None 
+            numbers = numbers[:insert] + [curr] + numbers[insert:]
+            numbers.remove(None)
+    return numbers, valid
+
 if __name__ == '__main__':
     day05A()
+    day05B()
