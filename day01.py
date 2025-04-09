@@ -2,6 +2,7 @@
 # John Roy Daradal 
 
 # SolutionA: 1834060
+# SolutionB: 21607792
 
 from utils import * 
 
@@ -23,5 +24,19 @@ def day01A():
         total += abs(a-b)
     print(total)
 
+def day01B():
+    full = True 
+    col1, col2 = input01(full)
+    freq = {}
+    for x in col2:
+        freq.setdefault(x, 0)
+        freq[x] += 1 
+    total = 0 
+    for x in col1:
+        y = freq.get(x, 0)
+        total += x*y 
+    print(total)
+
 if __name__ == '__main__':
     day01A()
+    day01B()
